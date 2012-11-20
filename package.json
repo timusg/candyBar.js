@@ -1,0 +1,20 @@
+
+{
+    "name": "candybar",
+    "version": "0.0.1",
+    "author": "Henrik Joreteg <henrik@andyet.net>",
+    "description": "Self-contained, self-rendering, call status UI for web apps",
+    "dependencies": {
+        "jade": "",
+        "uglify-js": "",
+        "underscore": "",
+        "colors": "",
+        "yetify": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/att-innovate/CandyBar.git"
+    },
+    "keywords": ["telephony", "browser", "jade"],
+    "main": "candybar.js"
+}

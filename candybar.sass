@@ -1,0 +1,113 @@
+@import _define
+
+=callbar($color)
+  background-color: $color
+  +gradient(rgba(255,255,255,.3), rgba(50,50,50,.1))
+  border:
+    top: 2px solid $color + #222
+    bottom: 2px solid $color - #444
+  +shadow(rgba(0,0,0,.2),0,3px,5)
+
+#callStatus
+  position: fixed
+  top: -120px
+  -webkit-transition: background-color 1s
+  -webkit-transition: top 1s
+  width: 100%
+  height: 80px
+  padding: 10px
+  z-index: 1000
+
+  &.visible
+    top: 0px
+
+  &.incoming
+    +callbar($blue)
+    .callTime
+      display: none
+
+  &.waiting
+    +callbar($orange)
+    
+    .spinner div
+      background-color: #fff
+
+  &.calling
+    +callbar($blue)
+    .callTime
+      display: none
+    .callerName:before
+      content: "Calling: "
+
+  &.active
+    +callbar($green)
+
+  &.inactive
+    +callbar(#fff)
+
+  &.remote
+    +callbar($blue + #333)    
+    .callTime
+      display: none
+
+  &.ending
+    .callerName:before
+      content: "Call ending with: "
+    +callbar($grey)
+    
+  .callActions
+    position: absolute
+    left: 100px
+    top: 50px
+    display: block
+    width: 100%
+
+  nav
+    float: left
+
+  button
+    +gradient(rgba(255,255,255,.3),rgba(0,0,0,.1))
+    border:
+      top: 1px solid rgba(255,255,255,.7)
+      bottom: 1px solid rgba(0,0,0,.2)
+    width: 100px
+    margin-right: 10px
+    font-size: 16px
+    color: rgba(0,0,0,.8)
+    +text_shadow(rgba(255,255,255,.7),0,1px,0)
+    float: left
+    &:active
+      +inner_shadow(rgba(0,0,0,.2),0,1px,3)
+      padding-top: 8px
+      padding-bottom: 6px
+      border:
+        bottom: 1px solid rgba(255,255,255,.7)
+        top: 1px solid rgba(0,0,0,.2)
+
+.callerAvatar
+  float: left
+  width: 65px
+  height: 65px
+  border: 5px solid #eee
+  margin-right: 10px
+
+.callerName, .callTime
+  font-weight: bold
+  color: #fff
+  +text_shadow(rgba(0,0,0,.7),0,1px,0)
+  line-height: 1
+
+.callerName
+  margin:
+    top: 0px
+    right: 30px
+    left: 90px
+  font-size: 20px
+  padding-bottom: 10px
+  border-bottom: 2px groove rgba(255,255,255,.4)
+
+.callTime
+  position: absolute
+  top: 10px
+  right: 40px
+  font-size: 20px

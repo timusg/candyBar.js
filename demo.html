@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CandyBar Demo</title>
+        <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+        <link rel="stylesheet" href="candybar.css">
+        <script src="candybar.js"></script>
+        <script>
+            var cb = new CandyBar();
+            
+            document.addEventListener('DOMContentLoaded', function () {
+              cb.render();
+            }, false);
+
+        </script>
+    </head>
+    <body>
+        <div class="container offset4 span8">
+            <h1>Candybar Demo</h1>
+            <p>CandyBar is a simple UI view for showing/managing call states in your app.</p>
+            <p>It is meant to be used with phone-enabled web applications. It does not contain the actual call logic, it's merely meant to a "view" to reflect current call status.</p>
+            <h4>Available states (click to see)</h4>
+            <button class="btn" onclick="cb.setState('active'); return false;">cb.setState('active')</button>
+            <button class="btn" onclick="cb.setState('calling'); return false;">cb.setState('calling')</button>
+            <button class="btn" onclick="cb.setState('remote'); return false;">cb.setState('remote')</button>
+            <button class="btn" onclick="cb.setState('inactive'); return false;">cb.setState('inactive')</button>
+            <button class="btn" onclick="cb.setState('incoming'); return false;">cb.setState('incoming')</button>
+            <button class="btn" onclick="cb.endGently(); return false;">cb.endGently()</button>
+
+            <h4>Set Caller ID</h4>
+            <pre>
+cb.setUser({
+    name: 'Meow', 
+    number: '999-999-9999', 
+    picUrl: 'http://placekitten.com/100/100'
+});
+            </pre>
+            <button class="btn" onclick="cb.setUser({name: 'Meow', number: '999-999-9999', picUrl: 'http://placekitten.com/100/100'}); return false;">set user</button>
+            <button class="btn" onclick="cb.clearUser(); return false;">cb.clearUser()</button>
+        </div>
+    </body>
+</html>
