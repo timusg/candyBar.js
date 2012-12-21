@@ -182,16 +182,22 @@
   };
 
   Dialer.prototype.addButtonHandlers = function () {
-    var self = this;
-    this.dom.addEventListener('click', function (e) {
-      var target = e.target;
-      if (target.tagname === 'BUTTON') {
-        if (this[target.className]) {
-          this[target.className]();
+    var self = this,
+      buttons = this.dom.querySelectorAll('button');
+
+    Array.prototype.forEach.call(buttons, function (button) {
+      console.log('looped', button);
+      button.addEventListener('click', function (e) {
+        console.log('click', e);
+        var target = e.target;
+        if (target.tagname === 'BUTTON') {
+          console.log('here', target);
+          return false;
         }
-        return false;
-      }
-    }, true);
+      }, true);
+    });
+
+    
   };
   
   Dialer.prototype.handleKeyDown = function (e) {

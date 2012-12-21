@@ -37,8 +37,8 @@
     };
 
     this.config = {
-      defaultName: 'Unknown',
-      defaultNumber: 'unknown'
+      defaultName: '',
+      defaultNumber: 'Unknown Number'
     };
   };
   
