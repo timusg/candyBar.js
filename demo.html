@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CandyBar Demo</title>
-        <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+        <title>CandyBar</title>
         <link rel="stylesheet" href="candybar.css">
         <script src="build/candybar.js"></script>
         <script>
@@ -15,17 +14,17 @@
         </script>
     </head>
     <body>
-        <div class="container offset4 span8">
-            <h1>Candybar Demo</h1>
+        <div class="wrap">
+            <h1>Candybar</h1>
             <p>CandyBar is a simple UI view for showing/managing call states in your app.</p>
             <p>It is meant to be used with phone-enabled web applications. It does not contain the actual call logic, it's merely meant to a "view" to reflect current call status.</p>
             <h4>Available states (click to see)</h4>
-            <button class="btn" onclick="cb.setState('active'); return false;">cb.setState('active')</button>
-            <button class="btn" onclick="cb.setState('calling'); return false;">cb.setState('calling')</button>
-            <button class="btn" onclick="cb.setState('remote'); return false;">cb.setState('remote')</button>
-            <button class="btn" onclick="cb.setState('inactive'); return false;">cb.setState('inactive')</button>
-            <button class="btn" onclick="cb.setState('incoming'); return false;">cb.setState('incoming')</button>
-            <button class="btn" onclick="cb.endGently(); return false;">cb.endGently()</button>
+            <button onclick="cb.setState('active'); return false;">cb.setState('active')</button>
+            <button onclick="cb.setState('calling'); return false;">cb.setState('calling')</button>
+            <button onclick="cb.setState('remote'); return false;">cb.setState('remote')</button>
+            <button onclick="cb.setState('inactive'); return false;">cb.setState('inactive')</button>
+            <button onclick="cb.setState('incoming'); return false;">cb.setState('incoming')</button>
+            <button onclick="cb.endGently(); return false;">cb.endGently()</button>
 
             <h4>Set Caller ID</h4>
             <pre>
@@ -35,8 +34,13 @@ cb.setUser({
     picUrl: 'http://placekitten.com/100/100'
 });
             </pre>
-            <button class="btn" onclick="cb.setUser({name: 'Meow', number: '999-999-9999', picUrl: 'http://placekitten.com/100/100'}); return false;">set user</button>
-            <button class="btn" onclick="cb.clearUser(); return false;">cb.clearUser()</button>
+            <button onclick="cb.setUser({name: 'Meow', number: '999-999-9999', picUrl: 'http://placekitten.com/100/100'}); return false;">set user</button>
+            <button onclick="cb.clearUser(); return false;">cb.clearUser()</button>
         </div>
+        <footer>
+        <p>Copyright &copy; AT&T Foundry. Demo app created by &yet.
+            <a class="andyet" href="http://andyet.net">&yet</a>
+            <a class="foundry" href="http://developer.att.com/developer/forward.jsp?passedItemId=5300164"> AT&T Foundry</a>
+        </p>
     </body>
 </html>
