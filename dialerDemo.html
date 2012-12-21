@@ -7,10 +7,10 @@
         <script src="vendor/att.phonenumber.js"></script>
         <script src="build/dialer.js"></script>
         <script>
-            var dialer = new Dialer();
+            window.dialer = new Dialer();
             
             document.addEventListener('DOMContentLoaded', function () {
-              dialer.render();
+              document.body.insertBefore(dialer.render(), document.body.firstChild);
             }, false);
 
         </script>

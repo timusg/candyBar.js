@@ -11,7 +11,7 @@
   var Dialer = function (spec) {
     // inherit wildemitter properties
     WildEmitter.call(this);
-
+    this.number = '';
     this.on('*', function (event, payload) {
       console.log('e', event, payload);
     });
@@ -19,14 +19,9 @@
 
   Dialer.prototype = new WildEmitter();
   
-  Dialer.prototype.render = function () {
-    if (!this.dom) {
-      this.dom = this.domify(template(this));
-      this.addButtonHandlers();
-      document.body.insertBefore(this.dom, document.body.firstChild);
-    } else {
-      this.dom.innerHTML = this.domify(template(this)).innerHTML;
-    }
+  Dialer.prototype.render = function (container) {
+    this.dom = this.domify(template(this));
+    this.addButtonHandlers();
     this.numberField = this.dom.querySelector('.numberEntry');
     this.clear();
     this.addDocListener();
@@ -51,16 +46,22 @@
   };
 
   Dialer.prototype.addButtonHandlers = function () {
-    var self = this;
-    this.dom.addEventListener('click', function (e) {
-      var target = e.target;
-      if (target.tagname === 'BUTTON') {
-        if (this[target.className]) {
-          this[target.className]();
+    var self = this,
+      buttons = this.dom.querySelectorAll('button');
+
+    Array.prototype.forEach.call(buttons, function (button) {
+      console.log('looped', button);
+      button.addEventListener('click', function (e) {
+        console.log('click', e);
+        var target = e.target;
+        if (target.tagname === 'BUTTON') {
+          console.log('here', target);
+          return false;
         }
-        return false;
-      }
-    }, true);
+      }, true);
+    });
+
+    
   };
   
   Dialer.prototype.handleKeyDown = function (e) {
@@ -99,7 +100,6 @@
     if (callable) {
       this.emit('callableNumber', callable);
     }
-    this.emit('numberPressed', newNumber, number);
   };
 
   Dialer.prototype.removeLastNumber = function () {
