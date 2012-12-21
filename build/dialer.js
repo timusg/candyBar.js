@@ -147,7 +147,7 @@
   var Dialer = function (spec) {
     // inherit wildemitter properties
     WildEmitter.call(this);
-
+    this.number = '';
     this.on('*', function (event, payload) {
       console.log('e', event, payload);
     });
@@ -155,14 +155,9 @@
 
   Dialer.prototype = new WildEmitter();
   
-  Dialer.prototype.render = function () {
-    if (!this.dom) {
-      this.dom = this.domify(template(this));
-      this.addButtonHandlers();
-      document.body.insertBefore(this.dom, document.body.firstChild);
-    } else {
-      this.dom.innerHTML = this.domify(template(this)).innerHTML;
-    }
+  Dialer.prototype.render = function (container) {
+    this.dom = this.domify(template(this));
+    this.addButtonHandlers();
     this.numberField = this.dom.querySelector('.numberEntry');
     this.clear();
     this.addDocListener();
@@ -235,7 +230,6 @@
     if (callable) {
       this.emit('callableNumber', callable);
     }
-    this.emit('numberPressed', newNumber, number);
   };
 
   Dialer.prototype.removeLastNumber = function () {

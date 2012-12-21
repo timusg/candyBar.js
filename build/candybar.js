@@ -63,7 +63,6 @@
 
     this.config = {
       defaultName: 'Unknown',
-      defaultPicUrl: 'fallback.png',
       defaultNumber: 'unknown'
     };
   };
@@ -161,7 +160,7 @@
   CandyBar.prototype.getUser = function () {
     var user = this.user || {};
     return {
-      picUrl: user.picUrl || this.config.defaultPicUrl,
+      picUrl: user.picUrl,
       name: (user.name && user.name) || this.config.defaultName,
       number: (user.number && escape(user.number)) || this.config.defaultNumber
     };
@@ -174,6 +173,11 @@
     this.dom.querySelector('.callerAvatar').src = user.picUrl;
     this.dom.querySelector('.callerNumber').innerHTML = user.number;
     this.dom.querySelector('.callerName').innerHTML = user.name;
+    if (user.picUrl) {
+      this.dom.classList.add('havatar');
+    } else {
+      this.dom.classList.remove('havatar');
+    }
   };
 
   CandyBar.prototype.clearUser = function () {
