@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CandyBar Demo</title>
+        <title>Dialer Demo</title>
         <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-        <link rel="stylesheet" href="candybar.css">
-        <script src="build/candybar.js"></script>
+        <link rel="stylesheet" href="dialer.css">
+        <script src="vendor/att.phonenumber.js"></script>
+        <script src="build/dialer.js"></script>
         <script>
-            var cb = new CandyBar();
+            var dialer = new Dialer();
             
             document.addEventListener('DOMContentLoaded', function () {
-              cb.render();
+              dialer.render();
             }, false);
 
         </script>
     </head>
     <body>
         <div class="container offset4 span8">
-            <h1>Candybar Demo</h1>
-            <p>CandyBar is a simple UI view for showing/managing call states in your app.</p>
-            <p>It is meant to be used with phone-enabled web applications. It does not contain the actual call logic, it's merely meant to a "view" to reflect current call status.</p>
+            <h1>Dialer Demo</h1>
+            <p>dialer.js renders a dialer</p>
+            <p>It is meant to be used with phone-enabled web applications. It does not contain the call functionality, it's merely a self-contained UI piece meant to provide an easily customizable dialpad you can add to your app.</p>
             <h4>Available states (click to see)</h4>
             <button class="btn" onclick="cb.setState('active'); return false;">cb.setState('active')</button>
             <button class="btn" onclick="cb.setState('calling'); return false;">cb.setState('calling')</button>
