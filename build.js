@@ -6,32 +6,57 @@ var jade = require('jade'),
     templatefunc,
     main;
 
+var jadeRuntime;
+
+try {
+    jadeRuntime = fs.readFileSync(__dirname + '/../jade/runtime.min.js', 'utf-8');
+} catch (e) {
+    jadeRuntime = fs.readFileSync(__dirname + '/node_modules/jade/runtime.min.js', 'utf-8');
+}
+
+var emitter = fs.readFileSync(__dirname + '/src/wildemitter.js', 'utf-8');
+
+// indents each line in a file by 4 spaces or whatever you pass into it
+function indent(file, indentAmount) {
+    var split = file.split('\n'),
+        actualIndent = indentAmount || '    ',
+        i = 0,
+        l = split.length;
+    
+    for (; i < l; i++) {
+        split[i] = actualIndent + split[i];
+    }
+    
+    return split.join('\n');
+}
+
 function beautify(code) {
     var ast = uglify.parser.parse(code);
     return uglify.uglify.gen_code(ast, {beautify: true});
 }
 
-var jadeRuntime;
+function minify(name) {
+    var code = fs.readFileSync(__dirname + '/build/' + name + '.js', 'utf-8'),
+        ast = uglify.parser.parse(code),
+        pro = uglify.uglify,
+        minified;
 
-try {
-    jadeRuntime = fs.readFileSync(__dirname + '/../jade/runtime.min.js');
-} catch (e) {
-    jadeRuntime = fs.readFileSync(__dirname + '/node_modules/jade/runtime.min.js');
+    ast = pro.ast_mangle(ast); // get a new AST with mangled names
+    ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
+    minified = pro.gen_code(ast); // build out the code
+
+    fs.writeFileSync(__dirname + '/build/' + name + '.min.js', minified);
 }
 
-templatefunc = beautify(jade.compile(fs.readFileSync(__dirname + '/src/template.jade'), {client: true, compileDebug: false, pretty: true}).toString());
-main = fs.readFileSync(__dirname + '/src/main.js', 'utf-8').toString().replace("{{{templatefunc}}}", templatefunc);
-main = main.replace("{{{jaderuntime}}}", jadeRuntime);
+function build(name) {
+    templatefunc = beautify(jade.compile(fs.readFileSync(__dirname + '/src/' + name + 'Template.jade', 'utf-8'), {client: true, compileDebug: false, pretty: true}).toString());
+    main = fs.readFileSync(__dirname + '/src/' + name + '.js', 'utf-8').toString().replace("{{{templatefunc}}}", templatefunc);
+    main = main.replace("{{{jaderuntime}}}", jadeRuntime);
+    main = main.replace("{{{emitter}}}", indent(emitter, '  '));
 
-fs.writeFileSync('candybar.js', main);
+    fs.writeFileSync(__dirname + '/build/' + name + '.js', main);
+    minify(name);
+}
 
-
-var ast = uglify.parser.parse(main),
-    pro = uglify.uglify,
-    minified;
-
-ast = pro.ast_mangle(ast); // get a new AST with mangled names
-ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
-minified = pro.gen_code(ast); // build out the code
-
-fs.writeFileSync('candybar.min.js', minified);
+build('candybar');
+build('dialer');

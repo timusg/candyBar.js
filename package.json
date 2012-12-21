@@ -6,7 +6,7 @@
     "description": "Self-contained, self-rendering, call status UI for web apps",
     "dependencies": {
         "jade": "",
-        "uglify-js": "",
+        "uglify-js": "1.x",
         "underscore": "",
         "colors": "",
         "yetify": ""
