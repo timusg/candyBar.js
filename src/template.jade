@@ -1,7 +1,9 @@
 #callStatus
-  img.callerAvatar(src= locals.picUrl)
-  h1.callerName= locals.caller
-  h2.callerNumber= locals.caller
+  -if(locals.picUrl)
+    imgcallerAvatar(src= locals.picUrl)
+  h1.caller
+    span.callerName= locals.caller
+    span.callerNumber= local.caller
   h2.callTime 0:00:00
   .callActions
     button.answer Answer
@@ -11,4 +13,4 @@
     button.push Push Call
     button.addParty Add Party
     button.mute Mute
-    button.hold Hold
+    button.hold Hold()
