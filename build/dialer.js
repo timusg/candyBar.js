@@ -146,10 +146,23 @@
   var phoney = window.att && window.att.phoneNumber || window.phoney;
 
   var Dialer = function (spec) {
+    var config = spec || {},
+      availableCallbacks = {
+        'onHide': 'hide',
+        'onPress': 'press',
+        'onCallableNumber': 'callableNumber',
+        'onCall': 'call'
+      };
+
     // inherit wildemitter properties
     WildEmitter.call(this);
     this.number = '';
     this.footer = true;
+
+    // register handlers passed in on init
+    for (var item in availableCallbacks) {
+      if (config[item]) this.on(availableCallbacks[item], config[item]);
+    }
   };
 
   Dialer.prototype = new WildEmitter();
@@ -166,6 +179,7 @@
   Dialer.prototype.hide = function () {
     this.removeDocListener();
     this.dom.parentElement.removeChild(this.dom);
+    this.emit('hide');
   };
   
   Dialer.prototype.addDocListener = function () {
@@ -199,8 +213,6 @@
       }, true);
     });
 
-    console.log('callButton', callButton);
-
     if (callButton) {
       callButton.addEventListener('click', function () {
         self.handleCallClick.apply(self, arguments);
@@ -214,7 +226,7 @@
     // only handle if dialer is showing
     if (keyCode >= 48 && keyCode <= 57) {
         number = keyCode - 48;
-        this.addNumber(number);
+        this.addNumber(number + '');
     }
 
     if (keyCode === 8) {
@@ -233,9 +245,6 @@
       callable = phoney.getCallable(newNumber);
     this.number = newNumber;
     this.numberField.innerHTML = phoney.stringify(this.number);
-    if (newNumber !== oldNumber) {
-      this.emit('change', newNumber);
-    }
     if (callable) {
       this.emit('callableNumber', callable);
     }
@@ -243,12 +252,13 @@
 
   Dialer.prototype.addNumber = function (number) {
     var newNumber = (this.getNumber() + '') + number;
+    this.emit('press', number);
     this.setNumber(newNumber);
-    this.emit('number', number);
   };
 
   Dialer.prototype.removeLastNumber = function () {
     this.setNumber(this.getNumber().slice(0, -1));
+    this.emit('press', 'del');
   };
 
   Dialer.prototype.clear = function () {
@@ -263,7 +273,7 @@
 
   Dialer.prototype.handleCallClick = function (e) {
     e.preventDefault();
-    this.emit('call', phoney.getCallable(this.number));
+    this.emit('call', this.number, !!phoney.getCallable(this.number));
     return false;
   };
 
