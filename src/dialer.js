@@ -12,16 +12,14 @@
     // inherit wildemitter properties
     WildEmitter.call(this);
     this.number = '';
-    this.on('*', function (event, payload) {
-      console.log('e', event, payload);
-    });
+    this.footer = true;
   };
 
   Dialer.prototype = new WildEmitter();
   
   Dialer.prototype.render = function (container) {
     this.dom = this.domify(template(this));
-    this.addButtonHandlers();
+    this.addClickHandlers();
     this.numberField = this.dom.querySelector('.numberEntry');
     this.clear();
     this.addDocListener();
@@ -45,23 +43,32 @@
     document.removeEventListener('keydown', this.boundKeyHandler, true);
   };
 
-  Dialer.prototype.addButtonHandlers = function () {
+  Dialer.prototype.addClickHandlers = function () {
     var self = this,
-      buttons = this.dom.querySelectorAll('button');
+      buttons = this.dom.querySelectorAll('button'),
+      callButton = this.dom.querySelector('.call');
 
+    // for button handlers
     Array.prototype.forEach.call(buttons, function (button) {
-      console.log('looped', button);
       button.addEventListener('click', function (e) {
-        console.log('click', e);
-        var target = e.target;
-        if (target.tagname === 'BUTTON') {
-          console.log('here', target);
-          return false;
+        var data = this.attributes['data-value'],
+          value = data && data.nodeValue;
+        if (value == 'del') {
+          self.removeLastNumber();
+        } else {
+          self.addNumber(value);
         }
+        return false;
       }, true);
     });
 
-    
+    console.log('callButton', callButton);
+
+    if (callButton) {
+      callButton.addEventListener('click', function () {
+        self.handleCallClick.apply(self, arguments);
+      }, false);
+    }
   };
   
   Dialer.prototype.handleKeyDown = function (e) {
@@ -85,21 +92,22 @@
 
   Dialer.prototype.setNumber = function (number) {
     var newNumber = phoney.parse(number),
-      oldNumber = this.number;
+      oldNumber = this.number,
+      callable = phoney.getCallable(newNumber);
     this.number = newNumber;
     this.numberField.innerHTML = phoney.stringify(this.number);
     if (newNumber !== oldNumber) {
       this.emit('change', newNumber);
     }
-  };
-
-  Dialer.prototype.addNumber = function (number) {
-    var newNumber = (this.getNumber() + '') + number,
-        callable = phoney.getCallable(newNumber);
-    this.setNumber(newNumber);
     if (callable) {
       this.emit('callableNumber', callable);
     }
+  };
+
+  Dialer.prototype.addNumber = function (number) {
+    var newNumber = (this.getNumber() + '') + number;
+    this.setNumber(newNumber);
+    this.emit('number', number);
   };
 
   Dialer.prototype.removeLastNumber = function () {

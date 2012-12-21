@@ -63,7 +63,7 @@
 
     this.config = {
       defaultName: '',
-      defaultNumber: 'unknown'
+      defaultNumber: 'Unknown Number'
     };
   };
   
