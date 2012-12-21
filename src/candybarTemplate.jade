@@ -1,9 +1,8 @@
 #callStatus
-  -if(locals.picUrl)
-    imgcallerAvatar(src= locals.picUrl)
+  img.callerAvatar(src= locals.picUrl)
   h1.caller
     span.callerName= locals.caller
-    span.callerNumber= local.caller
+    span.callerNumber= locals.caller
   h2.callTime 0:00:00
   .callActions
     button.answer Answer

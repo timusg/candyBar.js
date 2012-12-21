@@ -18,13 +18,13 @@
         }, {
             src: true
         }));
-        buf.push('/>\n  <h1 class="callerName">');
+        buf.push('/>\n  <h1 class="caller"><span class="callerName">');
         var __val__ = locals.caller;
         buf.push(escape(null == __val__ ? "" : __val__));
-        buf.push('</h1>\n  <h2 class="callerNumber">');
+        buf.push('</span><span class="callerNumber">');
         var __val__ = locals.caller;
         buf.push(escape(null == __val__ ? "" : __val__));
-        buf.push('</h2>\n  <h2 class="callTime">0:00:00</h2>\n  <div class="callActions">\n    <button class="answer">Answer</button>\n    <button class="ignore">Ignore</button>\n    <button class="end">End Call</button>\n    <button class="take">Take Call</button>\n    <button class="push">Push Call</button>\n    <button class="addParty">Add Party</button>\n    <button class="mute">Mute</button>\n    <button class="hold">Hold</button>\n  </div>\n</div>');
+        buf.push('</span></h1>\n  <h2 class="callTime">0:00:00</h2>\n  <div class="callActions">\n    <button class="answer">Answer</button>\n    <button class="ignore">Ignore</button>\n    <button class="end">End Call</button>\n    <button class="take">Take Call</button>\n    <button class="push">Push Call</button>\n    <button class="addParty">Add Party</button>\n    <button class="mute">Mute</button>\n    <button class="hold">Hold()</button>\n  </div>\n</div>');
     }
     return buf.join("");
 }

@@ -4,6 +4,11 @@ body
   background-color: $backblue
   background-image: url(/img/body-bg.png) repeat 0px 0px
   font-family: "Helvetica Neue", "HelveticaNeue", "Helvetica-Neue", "HelveticaNeue-Light", Arial, sans-serif
+  position: relative
+  -webkit-transition: top 1s
+
+  &.candybarVisible
+    top: 100px
 
 =callbar($color)
   background-color: $color
@@ -177,24 +182,24 @@ footer
   +text_shadow(rgba(0,0,0,.7),0,1px,0)
   line-height: 1
 
-.callerName
+.caller
   margin:
     top: 0px
     right: 30px
     left: 90px
   font-size: 20px
-  padding-bottom: 10px
+  padding-bottom: 0px
   border-bottom: 2px groove rgba(255,255,255,.4)
 
+.callerName
+  display: inline
 .callerNumber
-  float: left
-  position: absolute
-  top: 0
-  left: 0
-  margin: 0
+  display: inline
+  margin-left: 10px
 
 .callTime
   position: absolute
-  top: 10px
+  top: 12px
   right: 40px
   font-size: 20px
+  margin: 0
