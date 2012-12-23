@@ -140,5 +140,12 @@
     return false;
   };
 
-  window.Dialer = Dialer;
+  // attach to window or export with commonJS
+  if (typeof module !== "undefined") {
+      module.exports = Dialer;
+  } else if (typeof define === "function" && define.amd) {
+      define(Dialer);
+  } else {
+      window.Dialer = Dialer;
+  }
 })(window);
