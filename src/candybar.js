@@ -4,7 +4,8 @@
 
   var template = {{{templatefunc}}}
 
-  var CandyBar = function (spec) {
+  var CandyBar = function (options) {
+    var spec = options || {};
     this.states = {
       incoming: {
         buttons: [
@@ -48,6 +49,11 @@
       defaultName: '',
       defaultNumber: 'Unknown Number'
     };
+
+    if (spec.phone) {
+      this.phone = spec.phone
+      this.registerPhoneHandlers(this.phone);
+    }
   };
   
   CandyBar.prototype.render = function () {
@@ -63,11 +69,12 @@
   };
   
   CandyBar.prototype.addButtonHandlers = function () {
+    var self = this;
     this.dom.addEventListener('click', function (e) {
       var target = e.target;
-      if (target.tagname === 'BUTTON') {
-        if (this[target.className]) {
-          this[target.className]();
+      if (target.tagName === 'BUTTON') {
+        if (self[target.className]) {
+          self[target.className]();
         }
         return false;
       }
@@ -142,6 +149,37 @@
       }, 1000);
     }, 1000);
     return this;
+  };
+
+  CandyBar.prototype.registerPhoneHandlers = function (phone) {
+    var self = this; 
+    phone.on('calling', function (number) {
+      self.setState('calling').setUser({
+          number: number
+      });
+    });
+    phone.on('outgoingCall', function (call) {
+      self.call = call;
+    });
+    phone.on('incomingCall', function (call, phoneNumber) {
+      self.call = call;
+      self.setState('incoming').setUser({
+        number: phoneNumber
+      });
+    });
+    phone.on('callBegin', function () {
+      self.setState('active');
+    });
+    phone.on('callEnd', function () {
+      self.setState('inactive').clearUser();
+    });
+    self.end = function () {
+      if (self.call) {
+        self.call.hangup && self.call.hangup();
+        self.call.end && self.call.end();
+        delete self.call;
+      }
+    }
   };
 
   CandyBar.prototype.getUser = function () {
