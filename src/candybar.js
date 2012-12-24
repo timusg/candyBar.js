@@ -7,26 +7,34 @@
   var CandyBar = function (spec) {
     this.states = {
       incoming: {
-        buttons: ['answer', 'ignore']
+        buttons: [
+          {
+            cls: 'answer',
+            label: 'Answer'
+          }, 
+          {
+            cls: 'ignore',
+            label: 'Ignore'
+          }
+        ]
       },
       calling: {
-        buttons: ['cancel']
+        buttons: [{
+          cls: 'cancel',
+          label: 'Cancel'
+        }]
       },
       active: {
-        buttons: ['hangup', 'mute', 'push'],
-        timer: true
-      },
-      muted: {
-        buttons: ['hangup', 'unmute'],
+        buttons: [{
+          cls: 'end',
+          label: 'End Call'
+        }],
         timer: true
       },
       inactive: {
         buttons: [],
         clearUser: true,
         hidden: true
-      },
-      remote: {
-        buttons: ['take']
       },
       ending: {
         buttons: []
@@ -71,8 +79,9 @@
   };
 
   CandyBar.prototype.setState = function (state) {
-    if (!this.dom) return;
+    if (!this.dom) return this;
     var buttons = this.dom.querySelectorAll('button'),
+      callActionsEl = this.dom.querySelector('.callActions'),
       self = this,
       stateDef = this.states[state],
       forEach = Array.prototype.forEach;
@@ -92,13 +101,14 @@
         document.body.classList.add('candybarVisible');
       }
 
-      // show/hide the correct buttons
+      // remove all the buttons
       forEach.call(buttons, function (button) {
-        if (stateDef.buttons.indexOf(button.className) !== -1) {
-          button.style.display = 'block';
-        } else {
-          button.style.display = 'none';
-        }
+        button.parentElement.removeChild(button);
+      });
+
+      // add buttons
+      stateDef.buttons.forEach(function (button) {
+        callActionsEl.appendChild(self.domify('<button class="' + button.cls + '">' + button.label + '</button>'));
       });
 
       // start/stop timer
@@ -118,6 +128,7 @@
     } else {
       throw new Error('Invalid value for CandyBar state. Valid values are: ' + this.getStates().join(', '));
     }
+    return this;
   };
 
   CandyBar.prototype.endGently = function (delay) {
@@ -130,6 +141,7 @@
         self.clearUser();
       }, 1000);
     }, 1000);
+    return this;
   };
 
   CandyBar.prototype.getUser = function () {
@@ -153,6 +165,7 @@
     } else {
       this.dom.classList.remove('havatar');
     }
+    return this;
   };
 
   CandyBar.prototype.clearUser = function () {
@@ -161,6 +174,7 @@
       name: '',
       number: ''
     });
+    return this;
   };
 
   CandyBar.prototype.domify = function (str) {
@@ -173,15 +187,18 @@
     this.timerStartTime = Date.now();
     this.timerStopped = false;
     this.updateTimer();
+    return this;
   };
 
   CandyBar.prototype.stopTimer = function () {
     this.timerStopped = true;
+    return this;
   };
 
   CandyBar.prototype.resetTimer = function () {
     this.timerStopped = true;
     this.setTimeInDom('0:00:00');
+    return this;
   };
 
   CandyBar.prototype.updateTimer = function () {
