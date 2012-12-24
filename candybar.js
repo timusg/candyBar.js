@@ -29,6 +29,8 @@
     return buf.join("");
 }
 
+  var phoney = window.att && window.att.phoneNumber || window.phoney;
+
   var CandyBar = function (options) {
     var spec = options || {};
     this.states = {
@@ -221,7 +223,7 @@
     if (!this.dom) return;
     var user = this.getUser();
     this.dom.querySelector('.callerAvatar').src = user.picUrl;
-    this.dom.querySelector('.callerNumber').innerHTML = user.number;
+    this.dom.querySelector('.callerNumber').innerHTML = phoney.stringify(user.number);
     this.dom.querySelector('.callerName').innerHTML = user.name;
     if (user.picUrl) {
       this.dom.classList.add('havatar');
