@@ -310,6 +310,10 @@ footer {
   z-index: 1000; }
   #callStatus.visible {
     top: 0px; }
+  #callStatus.havatar .callActions {
+    left: 100px; }
+  #callStatus.havatar .caller {
+    margin-left: 90px; }
   #callStatus.incoming {
     background-color: #41ade0;
     background-image: rgba(255, 255, 255, 0.3);
@@ -408,7 +412,7 @@ footer {
       content: "Call ending with: "; }
   #callStatus .callActions {
     position: absolute;
-    left: 100px;
+    left: 20px;
     top: 50px;
     display: block;
     width: 100%; }
@@ -464,7 +468,7 @@ footer {
 .caller {
   margin-top: 0px;
   margin-right: 30px;
-  margin-left: 90px;
+  margin-left: 0px;
   font-size: 20px;
   padding-bottom: 0px;
   border-bottom: 2px groove rgba(255, 255, 255, 0.4); }
