@@ -328,6 +328,8 @@ footer {
     -ms-filter: progid:DXImageTransform.Microsoft.Shadow(Color=rgba(0, 0, 0, 0.2),Direction=135,Strength=5); }
     #callStatus.incoming .callTime {
       display: none; }
+    #callStatus.incoming .callerName:before {
+      content: "Incoming: "; }
   #callStatus.waiting {
     background-color: #f47820;
     background-image: rgba(255, 255, 255, 0.3);
@@ -370,6 +372,8 @@ footer {
     -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px;
     box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px;
     -ms-filter: progid:DXImageTransform.Microsoft.Shadow(Color=rgba(0, 0, 0, 0.2),Direction=135,Strength=5); }
+    #callStatus.active .callerName:before {
+      content: "On Call: "; }
   #callStatus.inactive {
     background-color: white;
     background-image: rgba(255, 255, 255, 0.3);
@@ -412,7 +416,7 @@ footer {
       content: "Call ending with: "; }
   #callStatus .callActions {
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 50px;
     display: block;
     width: 100%; }

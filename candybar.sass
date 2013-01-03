@@ -109,6 +109,8 @@ footer
     +callbar($blue)
     .callTime
       display: none
+    .callerName:before
+      content: "Incoming: "
 
   &.waiting
     +callbar($orange)
@@ -125,6 +127,8 @@ footer
 
   &.active
     +callbar($green)
+    .callerName:before
+      content: "On Call: "
 
   &.inactive
     +callbar(#fff)
@@ -141,7 +145,7 @@ footer
     
   .callActions
     position: absolute
-    left: 20px
+    left: 10px
     top: 50px
     display: block
     width: 100%
