@@ -91,7 +91,7 @@
     } else {
       this.dom.innerHTML = this.domify(template(this)).innerHTML;
     }
-    this.clearUser();
+    this.setState('inactive');
     return this.dom;
   };
   
@@ -156,7 +156,7 @@
 
       // reset user if relevant
       if (stateDef.clearUser) {
-        this.setUser({});
+        this.clearUser();
       }
 
     } else {
@@ -176,6 +176,24 @@
       }, 1000);
     }, 1000);
     return this;
+  };
+
+  CandyBar.prototype.setImageUrl = function (url) {
+    this.attachImageDom(!!url);
+    this.imageDom.src = url;
+    this.dom.classList[!!url ? 'add' : 'remove']('havatar');
+  };
+
+  CandyBar.prototype.attachImageDom = function (bool) {
+    if (!this.imageDom) {
+      this.imageDom = this.dom.querySelector('.callerAvatar');
+    }
+    if (bool && !this.imageDom.parentElement) {
+      this.dom.insertBefore(this.imageDom, this.dom.firstChild);
+    } else if (this.imageDom.parentElement) {
+      this.imageDom.parentElement.removeChild(this.imageDom);
+    }
+    return this.imageDom;
   };
 
   CandyBar.prototype.registerPhoneHandlers = function (phone) {
@@ -220,11 +238,22 @@
   };
 
   CandyBar.prototype.getUser = function () {
-    var user = this.user || {};
+    var user = this.user || {},
+      self = this;
     return {
       picUrl: user.picUrl,
       name: (user.name && user.name) || this.config.defaultName,
-      number: (user.number && escape(user.number)) || this.config.defaultNumber
+      number: function () {
+        if (user.number && user.number !== self.config.defaultNumber) {
+          if (phoney) {
+            return phoney.stringify(user.number);
+          } else {
+            return escape(user.number);
+          }
+        } else {
+          return self.config.defaultNumber;
+        }
+      }()
     };
   };
 
@@ -232,14 +261,9 @@
     this.user = details;
     if (!this.dom) return;
     var user = this.getUser();
-    this.dom.querySelector('.callerAvatar').src = user.picUrl;
-    this.dom.querySelector('.callerNumber').innerHTML = phoney.stringify(user.number);
+    this.dom.querySelector('.callerNumber').innerHTML = user.number;
     this.dom.querySelector('.callerName').innerHTML = user.name;
-    if (user.picUrl) {
-      this.dom.classList.add('havatar');
-    } else {
-      this.dom.classList.remove('havatar');
-    }
+    this.setImageUrl(user.picUrl);
     return this;
   };
 
