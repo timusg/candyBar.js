@@ -1,5 +1,5 @@
 /* global */
-(function () {
+(function (window) {
   var {{{jaderuntime}}}
 
   var template = {{{templatefunc}}}
@@ -14,7 +14,7 @@
           {
             cls: 'answer',
             label: 'Answer'
-          }, 
+          },
           {
             cls: 'ignore',
             label: 'Ignore'
@@ -53,7 +53,7 @@
     };
 
     if (spec.phone) {
-      this.phone = spec.phone
+      this.phone = spec.phone;
       this.registerPhoneHandlers(this.phone);
     }
   };
@@ -172,7 +172,7 @@
   };
 
   CandyBar.prototype.registerPhoneHandlers = function (phone) {
-    var self = this; 
+    var self = this;
     phone.on('calling', function (number) {
       self.setState('calling').setUser({
           number: number
@@ -209,7 +209,7 @@
       if (self.call) {
         self.call.hangup();
       }
-    }
+    };
   };
 
   CandyBar.prototype.getUser = function () {

@@ -6,8 +6,6 @@ var jade = require('jade'),
     templatefunc,
     main;
 
-var jadeRuntime;
-
 try {
     jadeRuntime = fs.readFileSync(__dirname + '/../jade/runtime.min.js', 'utf-8');
 } catch (e) {
@@ -36,7 +34,7 @@ function beautify(code) {
 }
 
 function minify(name) {
-    var code = fs.readFileSync(__dirname + '/' + name + '.js', 'utf-8'),
+    var code = fs.readFileSync(__dirname + '/build/' + name + '.js', 'utf-8'),
         ast = uglify.parser.parse(code),
         pro = uglify.uglify,
         minified;
@@ -45,7 +43,7 @@ function minify(name) {
     ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
     minified = pro.gen_code(ast); // build out the code
 
-    fs.writeFileSync(__dirname + '/' + name + '.min.js', minified);
+    fs.writeFileSync(__dirname + '/build/' + name + '.min.js', minified);
 }
 
 function build(name) {
@@ -54,7 +52,7 @@ function build(name) {
     main = main.replace("{{{jaderuntime}}}", jadeRuntime);
     main = main.replace("{{{emitter}}}", indent(emitter, '  '));
 
-    fs.writeFileSync(__dirname + '/' + name + '.js', main);
+    fs.writeFileSync(__dirname + '/build/' + name + '.js', main);
     minify(name);
 }
 
